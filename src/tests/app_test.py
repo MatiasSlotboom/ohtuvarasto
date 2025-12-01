@@ -148,12 +148,14 @@ class TestApp(unittest.TestCase):
             'amount': '20'
         }, follow_redirects=True)
         self.assertEqual(response.status_code, 200)
+        self.assertIn(b'Warehouse Management', response.data)
 
     def test_remove_from_nonexistent_warehouse(self):
         response = self.client.post('/warehouse/NonExistent/remove', data={
             'amount': '20'
         }, follow_redirects=True)
         self.assertEqual(response.status_code, 200)
+        self.assertIn(b'Warehouse Management', response.data)
 
     def test_invalid_capacity_value(self):
         response = self.client.post('/add_warehouse', data={

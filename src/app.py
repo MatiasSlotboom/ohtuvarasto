@@ -54,7 +54,8 @@ def add_to_warehouse(name):
             amount = 0
         if amount > 0:
             warehouses[name].lisaa_varastoon(amount)
-    return redirect(url_for('view_warehouse', name=name))
+        return redirect(url_for('view_warehouse', name=name))
+    return redirect(url_for('index'))
 
 
 @app.route('/warehouse/<name>/remove', methods=['POST'])
@@ -66,8 +67,9 @@ def remove_from_warehouse(name):
             amount = 0
         if amount > 0:
             warehouses[name].ota_varastosta(amount)
-    return redirect(url_for('view_warehouse', name=name))
+        return redirect(url_for('view_warehouse', name=name))
+    return redirect(url_for('index'))
 
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run()
