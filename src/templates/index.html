@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Warehouse Management</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        h1, h2 {
+            color: #333;
+        }
+        .form-group {
+            margin-bottom: 10px;
+        }
+        label {
+            display: inline-block;
+            width: 120px;
+        }
+        input[type="text"], input[type="number"] {
+            padding: 8px;
+            width: 200px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        input:focus {
+            outline: none;
+            border-color: #007bff;
+            box-shadow: 0 0 3px rgba(0,123,255,0.3);
+        }
+        input:invalid {
+            border-color: #dc3545;
+        }
+        .help-text {
+            font-size: 0.85em;
+            color: #666;
+            margin-top: 4px;
+        }
+        button {
+            padding: 8px 16px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            cursor: pointer;
+            margin: 5px 0;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        button.danger {
+            background-color: #dc3545;
+        }
+        button.danger:hover {
+            background-color: #c82333;
+        }
+        .warehouse-list {
+            list-style: none;
+            padding: 0;
+        }
+        .warehouse-item {
+            background-color: white;
+            padding: 15px;
+            margin-bottom: 10px;
+            border-radius: 5px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .warehouse-info {
+            flex-grow: 1;
+        }
+        .warehouse-actions {
+            display: flex;
+            gap: 10px;
+        }
+        .add-form {
+            background-color: white;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+        a {
+            text-decoration: none;
+            color: #007bff;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <h1>Warehouse Management</h1>
+
+    <div class="add-form">
+        <h2>Add New Warehouse</h2>
+        <form action="{{ url_for('add_warehouse') }}" method="post">
+            <div class="form-group">
+                <label for="name">Name:</label>
+                <input type="text" id="name" name="name" pattern="[A-Za-z\s]+" title="Only letters and spaces allowed" placeholder="e.g. Main Warehouse" required>
+                <div class="help-text">Letters only (A-Z, a-z)</div>
+            </div>
+            <div class="form-group">
+                <label for="tilavuus">Capacity:</label>
+                <input type="number" id="tilavuus" name="tilavuus" step="0.1" min="0.1" placeholder="e.g. 100" required>
+                <div class="help-text">Maximum storage capacity</div>
+            </div>
+            <div class="form-group">
+                <label for="alku_saldo">Initial Balance:</label>
+                <input type="number" id="alku_saldo" name="alku_saldo" step="0.1" min="0" value="0" placeholder="e.g. 0">
+                <div class="help-text">Starting amount (optional)</div>
+            </div>
+            <button type="submit">Add Warehouse</button>
+        </form>
+    </div>
+
+    <h2>Warehouses</h2>
+    {% if warehouses %}
+    <ul class="warehouse-list">
+        {% for name, warehouse in warehouses.items() %}
+        <li class="warehouse-item">
+            <div class="warehouse-info">
+                <strong><a href="{{ url_for('view_warehouse', name=name) }}">{{ name }}</a></strong><br>
+                Balance: {{ warehouse.saldo }} / {{ warehouse.tilavuus }} (Space left: {{ warehouse.paljonko_mahtuu() }})
+            </div>
+            <div class="warehouse-actions">
+                <a href="{{ url_for('view_warehouse', name=name) }}"><button type="button">View</button></a>
+                <form action="{{ url_for('remove_warehouse', name=name) }}" method="post" style="display: inline;">
+                    <button type="submit" class="danger" onclick="return confirm('Are you sure you want to remove this warehouse?')">Remove</button>
+                </form>
+            </div>
+        </li>
+        {% endfor %}
+    </ul>
+    {% else %}
+    <p>No warehouses yet. Add one above!</p>
+    {% endif %}
+</body>
+</html>
