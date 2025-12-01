@@ -23,8 +23,23 @@
             width: 120px;
         }
         input[type="text"], input[type="number"] {
-            padding: 5px;
+            padding: 8px;
             width: 200px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        input:focus {
+            outline: none;
+            border-color: #007bff;
+            box-shadow: 0 0 3px rgba(0,123,255,0.3);
+        }
+        input:invalid {
+            border-color: #dc3545;
+        }
+        .help-text {
+            font-size: 0.85em;
+            color: #666;
+            margin-top: 4px;
         }
         button {
             padding: 8px 16px;
@@ -88,15 +103,18 @@
         <form action="{{ url_for('add_warehouse') }}" method="post">
             <div class="form-group">
                 <label for="name">Name:</label>
-                <input type="text" id="name" name="name" required>
+                <input type="text" id="name" name="name" pattern="[A-Za-z\s]+" title="Only letters and spaces allowed" placeholder="e.g. Main Warehouse" required>
+                <div class="help-text">Letters only (A-Z, a-z)</div>
             </div>
             <div class="form-group">
                 <label for="tilavuus">Capacity:</label>
-                <input type="number" id="tilavuus" name="tilavuus" step="0.1" min="0.1" required>
+                <input type="number" id="tilavuus" name="tilavuus" step="0.1" min="0.1" placeholder="e.g. 100" required>
+                <div class="help-text">Maximum storage capacity</div>
             </div>
             <div class="form-group">
                 <label for="alku_saldo">Initial Balance:</label>
-                <input type="number" id="alku_saldo" name="alku_saldo" step="0.1" min="0" value="0">
+                <input type="number" id="alku_saldo" name="alku_saldo" step="0.1" min="0" value="0" placeholder="e.g. 0">
+                <div class="help-text">Starting amount (optional)</div>
             </div>
             <button type="submit">Add Warehouse</button>
         </form>

@@ -23,8 +23,20 @@
             width: 120px;
         }
         input[type="number"] {
-            padding: 5px;
+            padding: 8px;
             width: 200px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        input:focus {
+            outline: none;
+            border-color: #007bff;
+            box-shadow: 0 0 3px rgba(0,123,255,0.3);
+        }
+        .help-text {
+            font-size: 0.85em;
+            color: #666;
+            margin-top: 4px;
         }
         button {
             padding: 8px 16px;
@@ -126,7 +138,8 @@
                 <form action="{{ url_for('add_to_warehouse', name=name) }}" method="post">
                     <div class="form-group">
                         <label for="add-amount">Amount:</label>
-                        <input type="number" id="add-amount" name="amount" step="0.1" min="0.1" required>
+                        <input type="number" id="add-amount" name="amount" step="0.1" min="0.1" placeholder="e.g. 10" required>
+                        <div class="help-text">Amount to add</div>
                     </div>
                     <button type="submit" class="success">Add to Warehouse</button>
                 </form>
@@ -136,7 +149,8 @@
                 <form action="{{ url_for('remove_from_warehouse', name=name) }}" method="post">
                     <div class="form-group">
                         <label for="remove-amount">Amount:</label>
-                        <input type="number" id="remove-amount" name="amount" step="0.1" min="0.1" required>
+                        <input type="number" id="remove-amount" name="amount" step="0.1" min="0.1" placeholder="e.g. 5" required>
+                        <div class="help-text">Amount to remove</div>
                     </div>
                     <button type="submit" class="warning">Remove from Warehouse</button>
                 </form>
