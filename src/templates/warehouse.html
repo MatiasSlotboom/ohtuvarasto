@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ name }} - Warehouse</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        h1, h2 {
+            color: #333;
+        }
+        .form-group {
+            margin-bottom: 10px;
+        }
+        label {
+            display: inline-block;
+            width: 120px;
+        }
+        input[type="number"] {
+            padding: 5px;
+            width: 200px;
+        }
+        button {
+            padding: 8px 16px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            cursor: pointer;
+            margin: 5px 0;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        button.success {
+            background-color: #28a745;
+        }
+        button.success:hover {
+            background-color: #218838;
+        }
+        button.warning {
+            background-color: #ffc107;
+            color: #333;
+        }
+        button.warning:hover {
+            background-color: #e0a800;
+        }
+        .warehouse-details {
+            background-color: white;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+        .actions-form {
+            background-color: white;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+        .actions-row {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+        .action-box {
+            flex: 1;
+            min-width: 250px;
+        }
+        a {
+            text-decoration: none;
+            color: #007bff;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+        .back-link {
+            margin-bottom: 20px;
+            display: block;
+        }
+        .stat {
+            font-size: 1.2em;
+            margin: 10px 0;
+        }
+        .stat-label {
+            color: #666;
+        }
+        .stat-value {
+            font-weight: bold;
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+    <a href="{{ url_for('index') }}" class="back-link">&larr; Back to all warehouses</a>
+
+    <h1>{{ name }}</h1>
+
+    <div class="warehouse-details">
+        <h2>Details</h2>
+        <div class="stat">
+            <span class="stat-label">Current Balance:</span>
+            <span class="stat-value">{{ warehouse.saldo }}</span>
+        </div>
+        <div class="stat">
+            <span class="stat-label">Total Capacity:</span>
+            <span class="stat-value">{{ warehouse.tilavuus }}</span>
+        </div>
+        <div class="stat">
+            <span class="stat-label">Space Available:</span>
+            <span class="stat-value">{{ warehouse.paljonko_mahtuu() }}</span>
+        </div>
+    </div>
+
+    <div class="actions-form">
+        <h2>Manage Content</h2>
+        <div class="actions-row">
+            <div class="action-box">
+                <h3>Add Content</h3>
+                <form action="{{ url_for('add_to_warehouse', name=name) }}" method="post">
+                    <div class="form-group">
+                        <label for="add-amount">Amount:</label>
+                        <input type="number" id="add-amount" name="amount" step="0.1" min="0.1" required>
+                    </div>
+                    <button type="submit" class="success">Add to Warehouse</button>
+                </form>
+            </div>
+            <div class="action-box">
+                <h3>Remove Content</h3>
+                <form action="{{ url_for('remove_from_warehouse', name=name) }}" method="post">
+                    <div class="form-group">
+                        <label for="remove-amount">Amount:</label>
+                        <input type="number" id="remove-amount" name="amount" step="0.1" min="0.1" required>
+                    </div>
+                    <button type="submit" class="warning">Remove from Warehouse</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
